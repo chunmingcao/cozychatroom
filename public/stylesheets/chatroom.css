@@ -1,19 +1,22 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 .username{
-color: red;
-font-weight: bold;
+  color: limegreen;
+  font-weight: bold;
+  padding-right: 15px;
 }
-#users-window{
-border-left: 2px solid black;
-height: 90%;
+
+.myname{
+  font-weight: bold;
 }
-body { font: 13px Helvetica, Arial; }
-form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+
+form { background: #eee; padding: 0px; position: fixed; height: 70px; bottom: 0; width: 100%; }
+form input { border: 1px solid #888; padding: 10px; height: 60px; font-size: 120%; width: 100%;}
+form button { width: 0%; background: rgb(130, 224, 255); font-size: 120%; height: 55px; border: none; padding: 10px; display: none}
 #messages, #userlist{ list-style-type: none; margin: 0; padding: 0; }
-#messages li { padding: 5px 10px; }
+#messages li { padding: 5px 10px; font-size: 120%}
 #messages li:nth-child(odd) { background: #eee; }
+
+#userlist li { padding: 5px 10px; font-size: 120%;}
 
 html {
   font-weight: 300;
@@ -31,8 +34,40 @@ html, input {
     sans-serif;
 }
 
-html, body {
+html, body{
   height: 100%;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
+.header{
+  height: 60px;
+  padding-left: 20px; 
+  padding-top: 22px;
+  background-color:#eee;
+  /*background-color: aquamarine;*/
+  /*border-bottom: 1.5px solid limegreen;*/
+  border-bottom: 1px solid #888;
+}
+.container{
+  height: 100%;
+}
+.window{
+  height: 82%; 
+}
+.msg-window {
+  height: 100%; 
+  width: 66%;
+  float: left;
+  overflow-y: scroll;
+  padding-bottom: 115px;
+}
+.users-window {
+  height: 100%; 
+  width: 33%;
+  float: left;
+  overflow-y: scroll;
+  padding-bottom: 115px;
+  border-left: 1px solid #888;
+}
+
