@@ -1,13 +1,15 @@
-function getUrlParam(key) {  
-  return unescape(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + escape(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));  
-}  
-
 // Would write the value of the QueryString-variable called name to the console  
 console.log(getUrlParam("room")); 
 
 var chatApp = angular.module('chatApp', []);
 
 chatApp.controller('chatCtl', ['$scope', function($scope){
+  var COLORS = [
+    '#e21400', '#91580f', '#f8a700', '#f78b00',
+    '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',
+    '#3b88eb', '#3824aa', '#a700ff', '#d300e7'
+  ];
+  
   $scope.msgs = [];
   $scope.users = [];
 
@@ -61,5 +63,14 @@ chatApp.controller('chatCtl', ['$scope', function($scope){
       socket.emit('chat message', msg);
       $scope.msg = '';
       return false;
+  }
+  
+  function getUrlParam(key) {  
+    return unescape(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + escape(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));  
+  } 
+
+  function getRandomColor(){
+      return COLORS[Math.floor(Math.random() * COLORS.length)];
   }  
+
 }]);   

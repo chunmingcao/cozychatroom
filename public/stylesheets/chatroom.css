@@ -10,7 +10,7 @@
 }
 
 form { background: #eee; padding: 0px; position: fixed; height: 70px; bottom: 0; width: 100%; }
-form input { border: 1px solid #888; padding: 10px; height: 60px; font-size: 120%; width: 100%;}
+form input { border: 1px solid #888; padding: 10px; height: 60px; font-size: 120%; width: 99%;}
 form button { width: 0%; background: rgb(130, 224, 255); font-size: 120%; height: 55px; border: none; padding: 10px; display: none}
 #messages, #userlist{ list-style-type: none; margin: 0; padding: 0; }
 #messages li { padding: 5px 10px; font-size: 120%}
@@ -60,14 +60,14 @@ html, body{
   width: 66%;
   float: left;
   overflow-y: scroll;
-  padding-bottom: 115px;
+  padding-bottom: 125px;
 }
 .users-window {
   height: 100%; 
   width: 33%;
   float: left;
   overflow-y: scroll;
-  padding-bottom: 115px;
+  padding-bottom: 125px;
   border-left: 1px solid #888;
 }
 
