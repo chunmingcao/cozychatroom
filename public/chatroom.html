@@ -1,0 +1,106 @@
+<!doctype html>
+<html ng-app="chatApp">
+  <head>
+    <title>Socket.IO chat</title>
+    <link href="/stylesheets/chatroom.css" rel="stylesheet" type="text/css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="https://code.angularjs.org/1.5.0-rc.1/angular.min.js"></script>
+  </head>
+  <body ng-controller="chatCtl">
+    <div class="container-fluid">  
+    <div class="row">
+        <p>Hello {{myname}}, Welcome to the cozeist chat room. Have fun!!!</p>
+    </div>
+    <div class="row">
+      <div class="col-xs-8">
+        <ul id="messages">
+          <li ng-repeat="msg in msgs">
+            <span class="username">{{msg.username}}</span>
+            <span class="message">{{msg.message}}</span>
+          </li>     
+        </ul>
+      </div>
+        
+      <div class="col-xs-4" id="users-window">
+        <ul id="userlist">
+          <li ng-repeat="user in users">{{user}}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <form>
+        <input id="m" autocomplete="off" ng-model="msg" placeholder="Type message..."/><button ng-click="sendmessage(msg)"  >Send</button>
+      </form>
+    </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+      <script>
+        function getUrlParam(key) {  
+          return unescape(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + escape(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));  
+        }  
+
+        // Would write the value of the QueryString-variable called name to the console  
+        console.log(getUrlParam("room")); 
+          
+        var chatApp = angular.module('chatApp', []);
+          
+        chatApp.controller('chatCtl', ['$scope', function($scope){
+          $scope.msgs = [];
+          $scope.users = [];
+          
+          console.log('socket io() start!!');
+          var socket = io();
+          console.log('socket io() end!!');
+          socket.on('chat message', function(msg){
+            console.log('recievemsg', msg);
+              $scope.$apply(function(){
+                $scope.msgs.push(msg);
+              });
+          });
+          socket.on('connect', function () {
+            console.log('connect', getUrlParam("room"));
+            socket.emit('join', getUrlParam("room"));
+          });
+          socket.on('disconnect', function () {
+              console.log('disconnected!');
+              socket.disconnect(true);
+              $scope.$apply(function(){
+                  $scope.msgs.push({username:'Server', message:'On maintainess, sorry for that. Come back soon!(Auto message)'});  });
+          });           
+            
+          socket.on('userjoin', function(username){
+            console.log('userjoin', username);
+            $scope.$apply(function(){
+              $scope.users.push(username);
+              $scope.msgs.push({username:username, message:'Hi, everyone!(Auto message)' });    
+            });
+          });
+            
+          socket.on('userleave', function(username){
+            console.log('userleave', username);
+            $scope.$apply(function(){
+              var index = $scope.users.indexOf(username);
+              $scope.users.splice(index, 1);
+              $scope.msgs.push({username:username, message:'Bye bye!!! (Auto message)'});
+            });
+          });
+            
+          socket.on('joined', function(username, users){
+              console.log('users', users);
+              $scope.$apply(function(){
+              $scope.myname = username;
+              $scope.users = users;
+            });
+          });
+               
+          $scope.sendmessage = function(msg){
+              console.log('sendmsg');
+              socket.emit('chat message', msg);
+              $scope.msg = '';
+              return false;
+          }  
+        }]);   
+      </script>  
+  </body>
+</html>
