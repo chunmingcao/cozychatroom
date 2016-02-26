@@ -77,7 +77,7 @@ chatApp.controller('chatCtl', ['$scope', function($scope){
     }
     console.log('getUserColor', name);
     console.log('getUserColor', COLORS[hash % COLORS.length]);
-    return COLORS[hash % COLORS.length];
+    return COLORS[Math.abs(hash % COLORS.length)];
   }  
 
 }]);   
