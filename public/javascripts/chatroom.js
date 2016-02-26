@@ -1,6 +1,4 @@
 // Would write the value of the QueryString-variable called name to the console  
-console.log(getUrlParam("room")); 
-
 var chatApp = angular.module('chatApp', []);
 
 chatApp.controller('chatCtl', ['$scope', function($scope){
@@ -19,6 +17,7 @@ chatApp.controller('chatCtl', ['$scope', function($scope){
   socket.on('chat message', function(msg){
     console.log('recievemsg', msg);
       $scope.$apply(function(){
+        //msg.color = getUserColor(msg.username);
         $scope.msgs.push(msg);
       });
   });
@@ -27,10 +26,10 @@ chatApp.controller('chatCtl', ['$scope', function($scope){
     socket.emit('join', getUrlParam("room"));
   });
   socket.on('disconnect', function () {
-      console.log('disconnected!');
-      socket.disconnect(true);
-      $scope.$apply(function(){
-          $scope.msgs.push({username:'Server', message:'On maintainess, sorry for that. Come back soon!(Auto message)'});  });
+    console.log('disconnected!');
+    socket.disconnect(true);
+    $scope.$apply(function(){
+      $scope.msgs.push({username:'Server', message:'On maintainess, sorry for that. Come back soon!(Auto message)'});  });
   });           
 
   socket.on('userjoin', function(username){
@@ -46,8 +45,8 @@ chatApp.controller('chatCtl', ['$scope', function($scope){
     $scope.$apply(function(){
       var index = $scope.users.indexOf(username);
       $scope.users.splice(index, 1);
-      $scope.msgs.push({username:username, message:'Bye bye!!! (Auto message)'});
-    });
+    });    
+    $scope.msgs.push({username:username, message:'Bye bye!!! (Auto message)'});
   });
 
   socket.on('joined', function(username, users){
@@ -59,18 +58,26 @@ chatApp.controller('chatCtl', ['$scope', function($scope){
   });
 
   $scope.sendmessage = function(msg){
-      console.log('sendmsg');
-      socket.emit('chat message', msg);
-      $scope.msg = '';
-      return false;
+    console.log('sendmsg');
+    socket.emit('chat message', msg);
+    $scope.msg = '';
+    return false;
   }
   
   function getUrlParam(key) {  
     return unescape(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + escape(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));  
   } 
 
-  function getRandomColor(){
-      return COLORS[Math.floor(Math.random() * COLORS.length)];
+  $scope.getUserColor = function (name){
+    var hash = 0;
+    for (var i = 0; i < name.length; i++) {
+        var character = name.charCodeAt(i);
+        hash = ((hash<<5)-hash)+character;
+        hash = hash & hash; // Convert to 32bit integer
+    }
+    console.log('getUserColor', name);
+    console.log('getUserColor', COLORS[hash % COLORS.length]);
+    return COLORS[hash % COLORS.length];
   }  
 
 }]);   

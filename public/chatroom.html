@@ -10,14 +10,14 @@
     <div class="container">  
     <div class="header">
       <header>
-          <p>Hello <span class="myname">{{myname}}</span>, Welcome to the cozeist chat room. Have fun!!!</p>
+          <p>Hello <span class="myname" style="color:{{getUserColor(myname)}};">{{myname}}</span>, Welcome to the cozeist chat room. Have fun!!!</p>
       </header>
     </div>
     
       <div class="msg-window">
         <ul id="messages">
           <li ng-repeat="msg in msgs">
-            <span class="username">{{msg.username}}</span>
+            <span class="username" style="color:{{getUserColor(msg.username)}};">{{msg.username}}</span>
             <span class="message">{{msg.message}}</span>
           </li>     
         </ul>
@@ -25,7 +25,7 @@
         
       <div class="users-window">
         <ul id="userlist">
-          <li ng-repeat="user in users">{{user}}</li>
+          <li ng-repeat="user in users"><span style="color:{{getUserColor(user)}};">{{user}}</span></li>
         </ul>
       </div>
     
