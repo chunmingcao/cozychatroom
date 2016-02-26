@@ -15,7 +15,7 @@
     </div>
     
       <div class="msg-window">
-        <ul id="messages">
+        <ul class="messages">
           <li ng-repeat="msg in msgs">
             <span class="username" style="color:{{getUserColor(msg.username)}};">{{msg.username}}</span>
             <span class="message">{{msg.message}}</span>
@@ -24,8 +24,8 @@
       </div>
         
       <div class="users-window">
-        <ul id="userlist">
-          <li ng-repeat="user in users"><span style="color:{{getUserColor(user)}};">{{user}}</span></li>
+        <ul class="userlist">
+            <li ng-repeat="user in users"><span style="color:{{getUserColor(user)}};">{{user}}<span ng-show="user===myname">&#x2605;</ng-show></span></li>
         </ul>
       </div>
     

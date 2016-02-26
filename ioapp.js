@@ -36,9 +36,10 @@ ioapp.on('connection', function(socket){
         socket.emit('joined', user.name, rooms.getUserList(user.room));
     });
 
-    socket.on('chat message', function(msg){
+    socket.on('chatmessage', function(msg){
         //io.emit('chat message', msg);
-        ioapp.to(user.room).emit('chat message', {username: user.name, message: msg});
+        if(msg)
+            ioapp.to(user.room).emit('chat message', {username: user.name, message: msg});
         console.log('message:', msg, 'socket.room', user.room);
     });
 });

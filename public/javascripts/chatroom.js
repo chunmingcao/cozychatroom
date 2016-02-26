@@ -20,16 +20,20 @@ chatApp.controller('chatCtl', ['$scope', function($scope){
         //msg.color = getUserColor(msg.username);
         $scope.msgs.push(msg);
       });
-  });
+      console.log('scroll', angular.element('.messages'));
+      angular.element('.messages')[0].scrollTop = angular.element('.messages')[0].scrollHeight;
+  }); 
+    
   socket.on('connect', function () {
     console.log('connect', getUrlParam("room"));
     socket.emit('join', getUrlParam("room"));
   });
+
   socket.on('disconnect', function () {
     console.log('disconnected!');
     socket.disconnect(true);
     $scope.$apply(function(){
-      $scope.msgs.push({username:'Server', message:'On maintainess, sorry for that. Come back soon!(Auto message)'});  });
+    $scope.msgs.push({username:'Server', message:'On maintainess, sorry for that. Come back soon!(Auto message)'});  });
   });           
 
   socket.on('userjoin', function(username){
@@ -58,8 +62,9 @@ chatApp.controller('chatCtl', ['$scope', function($scope){
   });
 
   $scope.sendmessage = function(msg){
-    console.log('sendmsg');
-    socket.emit('chat message', msg);
+    console.log('sendmsg', msg);
+    if(msg)
+        socket.emit('chatmessage', msg);
     $scope.msg = '';
     return false;
   }
@@ -69,14 +74,13 @@ chatApp.controller('chatCtl', ['$scope', function($scope){
   } 
 
   $scope.getUserColor = function (name){
+    if(!name) return 1;
     var hash = 0;
     for (var i = 0; i < name.length; i++) {
         var character = name.charCodeAt(i);
         hash = ((hash<<5)-hash)+character;
         hash = hash & hash; // Convert to 32bit integer
     }
-    console.log('getUserColor', name);
-    console.log('getUserColor', COLORS[hash % COLORS.length]);
     return COLORS[Math.abs(hash % COLORS.length)];
   }  
 
