@@ -14,11 +14,13 @@ Main goal - make this functional. You do not need use complex decisions, but hav
 */
 var ioapp = require('socket.io')();
 
-ioapp.on('connection', function(socket){
+ioapp.on('connection', function(socket) {
     console.log('a user connected', 'socket', socket.id);
-    var user = {name: getRandomName()};
+    var user = {
+        name: getRandomName()
+    };
 
-    socket.on('disconnect', function(){
+    socket.on('disconnect', function() {
         console.log('user disconnected', 'socket.user', this.id);
         socket.leave(user.room);
         rooms.leave(user.room, user.name);
@@ -26,64 +28,69 @@ ioapp.on('connection', function(socket){
         console.log('user leave', 'room', user.room);
     });
 
-    socket.on('join', function(room){
-    user.room = room;
-    socket.join(user.room);
-    rooms.join(user.room, user.name);
-    console.log('join user: ' + user.name + ' room:' + room);
+    socket.on('join', function(room) {
+        user.room = room;
+        socket.join(user.room);
+        rooms.join(user.room, user.name);
+        console.log('join user: ' + user.name + ' room:' + room);
 
-    ioapp.to(user.room).emit('userjoin', user.name);
+        ioapp.to(user.room).emit('userjoin', user.name);
         socket.emit('joined', user.name, rooms.getUserList(user.room));
     });
 
-    socket.on('chatmessage', function(msg){
+    socket.on('chatmessage', function(msg) {
         //io.emit('chat message', msg);
-        if(msg)
-            ioapp.to(user.room).emit('chat message', {username: user.name, message: msg});
+        if (msg)
+            ioapp.to(user.room).emit('chat message', {
+                username: user.name,
+                message: msg
+            });
         console.log('message:', msg, 'socket.room', user.room);
     });
 });
 
 
-var rooms = (function(){
+var rooms = (function() {
     rooms = {};
-    
-    rooms.join = function(room, user){
-        if(typeof rooms[room] === 'undefined'){
-            rooms[room] = {users: []};
-        } 
+
+    rooms.join = function(room, user) {
+        if (typeof rooms[room] === 'undefined') {
+            rooms[room] = {
+                users: []
+            };
+        }
         rooms[room].users.push(user);
         //console.log('rooms.join', rooms[room].users);
-    }
-    
-    rooms.leave = function(room, user){
-        if(typeof rooms[room] === 'undefined'){
-           return;
-        } 
+    };
+
+    rooms.leave = function(room, user) {
+        if (typeof rooms[room] === 'undefined') {
+            return;
+        }
         var users = rooms[room].users;
         var index = users.indexOf(user);
         users.splice(index, 1);
-    }
-    
-    rooms.getUserList = function(room){
+    };
+
+    rooms.getUserList = function(room) {
         //console.log('rooms.getUserList', 'room', room);
-        if(typeof rooms[room] === 'undefined'){
-          return [];
-        }else{
-          //console.log('rooms.getUserList', 'users', rooms[room].users);
-          return rooms[room].users;
+        if (typeof rooms[room] === 'undefined') {
+            return [];
+        } else {
+            //console.log('rooms.getUserList', 'users', rooms[room].users);
+            return rooms[room].users;
         }
-    }
-    
+    };
+
     return rooms;
 })();
 
 
-function getRandomName(){
+function getRandomName() {
     var name = '';
     var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-    for( var i=0; i < 8; i++ )
+    for (var i = 0; i < 8; i++)
         name += possible.charAt(Math.floor(Math.random() * possible.length));
 
     return name;

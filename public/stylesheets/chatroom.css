@@ -1,89 +1,129 @@
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-.username{
-  font-weight: bold;
-  padding-right: 15px;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.myname{
-  font-weight: bold;
+.username {
+    font-weight: bold;
+    padding-right: 15px;
 }
 
-form { background: #eee; padding: 0px; position: absolute; height: 70px; bottom: 0; width: 100%; }
-form input { border: 1px solid #888; padding: 10px; height: 60px; font-size: 120%; width: 90%; margin-right: .5%}
-form button { width: 9%; background: rgb(130, 224, 255); font-size: 120%; height: 55px; border: 1px solid #888; padding: 10px;}
-.messages, .userlist{ list-style-type: none; margin: 0; padding: 0; }
-.messages li { padding: 5px 10px; font-size: 120%}
-.messages li:nth-child(odd) { background: #eee; }
+.myname {
+    font-weight: bold;
+}
 
-.userlist li { padding: 5px 10px; font-size: 120%;}
+form {
+    background: #eee;
+    padding: 0px;
+    position: absolute;
+    height: 70px;
+    bottom: 0;
+    width: 100%;
+}
+
+form input {
+    border: 1px solid #888;
+    padding: 10px;
+    height: 60px;
+    font-size: 120%;
+    width: 90%;
+    margin-right: .5%
+}
+
+form button {
+    width: 9%;
+    background: rgb(130, 224, 255);
+    font-size: 120%;
+    height: 55px;
+    border: 1px solid #888;
+    padding: 10px;
+}
+
+.messages,
+.userlist {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.messages li {
+    padding: 5px 10px;
+    font-size: 120%
+}
+
+.messages li:nth-child(odd) {
+    background: #eee;
+}
+
+.userlist li {
+    padding: 5px 10px;
+    font-size: 120%;
+}
 
 html {
-  font-weight: 300;
-  -webkit-font-smoothing: antialiased;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
 }
 
-html, input {
-  font-family:
-    "HelveticaNeue-Light",
-    "Helvetica Neue Light",
-    "Helvetica Neue",
-    Helvetica,
-    Arial,
-    "Lucida Grande",
-    sans-serif;
+html,
+input {
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
-html, body{
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  /*overflow: hidden;*/
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    /*overflow: hidden;*/
 }
-.header{
-  height: 60px;
-  width: 100%;
-  padding-left: 20px; 
-  padding-top: 22px;
-  background-color:#eee;
-  /*background-color: aquamarine;*/
-  /*border-bottom: 1.5px solid limegreen;*/
-  border-bottom: 1px solid #888;
-  position: absolute;
+
+.header {
+    height: 60px;
+    width: 100%;
+    padding-left: 20px;
+    padding-top: 22px;
+    background-color: #eee;
+    /*background-color: aquamarine;*/
+    /*border-bottom: 1.5px solid limegreen;*/
+    border-bottom: 1px solid #888;
+    position: absolute;
 }
-.container{
-  height: 100%;
-  width: 100%;
-  position: absolute;
+
+.container {
+    height: 100%;
+    width: 100%;
+    position: absolute;
 }
 
 .msg-window {
-  height: 100%; 
-  width: 66%;
-  float: left;
-  padding-top: 60px;      
-  padding-bottom: 70px;
+    height: 100%;
+    width: 66%;
+    float: left;
+    padding-top: 60px;
+    padding-bottom: 70px;
 }
 
 .messages {
-  height: 100%;
-  margin: 0;
-  overflow-y: scroll;
-  /*padding: 10px 20px 10px 20px;*/
+    height: 100%;
+    margin: 0;
+    overflow-y: scroll;
+    /*padding: 10px 20px 10px 20px;*/
 }
 
 .users-window {
-  height: 100%; 
-  width: 33%;
-  float: left;
-  padding-top: 60px;    
-  padding-bottom: 70px;
-  border-left: 1px solid #888;
+    height: 100%;
+    width: 33%;
+    float: left;
+    padding-top: 60px;
+    padding-bottom: 70px;
+    border-left: 1px solid #888;
 }
 
 .userlist {
-  height: 100%;
-  margin: 0;
-  overflow-y: scroll;
-  /*padding: 10px 20px 10px 20px;*/
+    height: 100%;
+    margin: 0;
+    overflow-y: scroll;
+    /*padding: 10px 20px 10px 20px;*/
 }

@@ -1,41 +1,45 @@
 <!doctype html>
 <html ng-app="chatApp">
-  <head>
+
+<head>
     <title>Cozychatroom</title>
     <link href="/stylesheets/chatroom.css" rel="stylesheet" type="text/css">
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script src="https://code.angularjs.org/1.5.0-rc.1/angular.min.js"></script>
-  </head>
-  <body ng-controller="chatCtl">
-    <div class="container">  
-    <div class="header">
-      <header>
-          <p>Hello <span class="myname" style="color:{{getUserColor(myname)}};">{{myname}}</span>, Welcome to the cozeist chat room. Have fun!!!</p>
-      </header>
-    </div>
-    
-      <div class="msg-window">
-        <ul class="messages">
-          <li ng-repeat="msg in msgs">
-            <span class="username" style="color:{{getUserColor(msg.username)}};">{{msg.username}}</span>
-            <span class="message">{{msg.message}}</span>
-          </li>     
-        </ul>
-      </div>
-        
-      <div class="users-window">
-        <ul class="userlist">
-            <li ng-repeat="user in users"><span style="color:{{getUserColor(user)}};">{{user}}<span ng-show="user===myname">&#x2605;</ng-show></span></li>
-        </ul>
-      </div>
-    
-    <div class="row input">
-      <form>
-        <input id="m" autocomplete="off" ng-model="msg" placeholder="Type message..."/><button ng-click="sendmessage(msg)">Send</button>
-      </form>
-    </div>
+</head>
+
+<body ng-controller="chatCtl">
+    <div class="container">
+        <div class="header">
+            <header>
+                <p>Hello <span class="myname" style="color:{{getUserColor(myname)}};">{{myname}}</span>, Welcome to the cozeist chat room. Have fun!!!</p>
+            </header>
+        </div>
+
+        <div class="msg-window">
+            <ul class="messages">
+                <li ng-repeat="msg in msgs">
+                    <span class="username" style="color:{{getUserColor(msg.username)}};">{{msg.username}}</span>
+                    <span class="message">{{msg.message}}</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="users-window">
+            <ul class="userlist">
+                <li ng-repeat="user in users"><span style="color:{{getUserColor(user)}};">{{user}}<span ng-show="user===myname">&#x2605;</ng-show></span></li>
+            </ul>
+        </div>
+
+        <div class="row input">
+            <form>
+                <input id="m" autocomplete="off" ng-model="msg" placeholder="Type message..." /><button ng-click="sendmessage(msg)">Send</button>
+            </form>
+        </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/javascripts/chatroom.js"></script>  
-  </body>
+    <script src="/javascripts/chatroomclient.js"></script>
+    <script src="//localhost:35729/livereload.js"></script>
+</body>
+
 </html>
