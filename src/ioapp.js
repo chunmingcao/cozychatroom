@@ -13,18 +13,40 @@ You need use Mongodb as database and store there users activity.
 Main goal - make this functional. You do not need use complex decisions, but have a working room.
 */
 var ioapp = require('socket.io')();
+var mongoose = require('mongoose');
+var UsersModel = require('./models/user');
+
+mongoose.connect("mongodb://test:test@ds051990.mlab.com:51990/heroku_52p6q5gm");
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', console.log.bind(console, 'db connected'));
 
 ioapp.on('connection', function(socket) {
     console.log('a user connected', 'socket', socket.id);
-    var user = {
+    /*var user = {
         name: getRandomName()
-    };
-
+    };*/
+    var user = new UsersModel();
+    user.name = getRandomName();
+    user.ip = socket.request.connection.remoteAddress;
+    user.actions.push({name: 'connect'});
+    
+    function saveUser(){
+        user.save(function(err) {
+            if (err) console.log('save failure', err);
+        });
+    }
+    saveUser();
+    
     socket.on('disconnect', function() {
         console.log('user disconnected', 'socket.user', this.id);
         socket.leave(user.room);
         rooms.leave(user.room, user.name);
         ioapp.to(user.room).emit('userleave', user.name);
+        
+        user.actions.push({name: 'leaveroom'});
+        user.actions.push({name: 'disconnect'});
+        saveUser();
         console.log('user leave', 'room', user.room);
     });
 
@@ -35,16 +57,24 @@ ioapp.on('connection', function(socket) {
         console.log('join user: ' + user.name + ' room:' + room);
 
         ioapp.to(user.room).emit('userjoin', user.name);
+        
         socket.emit('joined', user.name, rooms.getUserList(user.room));
+        
+        user.actions.push({action: 'joinroom'});
+        saveUser();
     });
 
     socket.on('chatmessage', function(msg) {
         //io.emit('chat message', msg);
-        if (msg)
+        if (msg){
             ioapp.to(user.room).emit('chat message', {
                 username: user.name,
                 message: msg
             });
+            user.messages.push({content: msg});
+            saveUser();
+        }
+        
         console.log('message:', msg, 'socket.room', user.room);
     });
 });
