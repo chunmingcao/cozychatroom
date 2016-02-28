@@ -1,3 +1,4 @@
+'use strict'
 // Would write the value of the QueryString-variable called name to the console  
 var chatApp = angular.module('chatApp', []);
 
@@ -11,24 +12,24 @@ chatApp.controller('chatCtl', ['$scope', function($scope) {
     $scope.msgs = [];
     $scope.users = [];
 
-    console.log('socket io() start!!');
     var socket = io();
-    console.log('socket io() end!!');
-    socket.on('chat message', function(msg) {
-        console.log('recievemsg', msg);
-        $scope.$apply(function() {
-            //msg.color = getUserColor(msg.username);
-            $scope.msgs.push(msg);
-        });
-        console.log('scroll', angular.element('.messages'));
-        angular.element('.messages')[0].scrollTop = angular.element('.messages')[0].scrollHeight;
-    });
 
+    // join a room immediately after the connection with the url pram
     socket.on('connect', function() {
         console.log('connect', getUrlParam("room"));
         socket.emit('join', getUrlParam("room"));
     });
 
+    // when user joine the chat room successfully
+    socket.on('joined', function(username, users) {
+        console.log('users', users);
+        $scope.$apply(function() {
+            $scope.myname = username;
+            $scope.users = users;
+        });
+    });
+
+    // disconnected by the server side
     socket.on('disconnect', function() {
         console.log('disconnected!');
         socket.disconnect(true);
@@ -40,6 +41,7 @@ chatApp.controller('chatCtl', ['$scope', function($scope) {
         });
     });
 
+    // when other users join the same chat room
     socket.on('userjoin', function(username) {
         console.log('userjoin', username);
         $scope.$apply(function() {
@@ -51,6 +53,7 @@ chatApp.controller('chatCtl', ['$scope', function($scope) {
         });
     });
 
+    // when other users leave the same chat room
     socket.on('userleave', function(username) {
         console.log('userleave', username);
         $scope.$apply(function() {
@@ -63,14 +66,19 @@ chatApp.controller('chatCtl', ['$scope', function($scope) {
         });
     });
 
-    socket.on('joined', function(username, users) {
-        console.log('users', users);
+    // receive messages from other users in the same chat room
+    socket.on('chatmessage', function(msg) {
+        console.log('recievemsg', msg);
         $scope.$apply(function() {
-            $scope.myname = username;
-            $scope.users = users;
+            $scope.msgs.push(msg);
         });
+
+        // scroll to the bottom
+        console.log('scroll', angular.element('.messages'));
+        angular.element('.messages')[0].scrollTop = angular.element('.messages')[0].scrollHeight;
     });
 
+    // send a message
     $scope.sendmessage = function(msg) {
         console.log('sendmsg', msg);
         if (msg)
@@ -79,10 +87,12 @@ chatApp.controller('chatCtl', ['$scope', function($scope) {
         return false;
     };
 
+    // get the url parameter
     function getUrlParam(key) {
         return unescape(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + escape(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
     }
 
+    // get the color by hash of the username
     $scope.getUserColor = function(name) {
         if (!name) return 1;
         var hash = 0;
