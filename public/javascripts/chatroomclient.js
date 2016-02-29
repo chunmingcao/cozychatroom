@@ -60,10 +60,10 @@ chatApp.controller('chatCtl', ['$scope', function($scope) {
         $scope.$apply(function() {
             var index = $scope.users.indexOf(username);
             $scope.users.splice(index, 1);
-        });
-        $scope.msgs.push({
+            $scope.msgs.push({
             username: username,
             message: 'Bye bye!!! (Auto message)'
+            });
         });
     });
 
