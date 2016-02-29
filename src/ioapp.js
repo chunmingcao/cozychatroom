@@ -65,12 +65,12 @@ ioapp.on('connection', function(socket) {
         user.room = room;
         socket.join(user.room);
         console.log('join user: ' + user.name + ' room:' + room);
+        // update the userlist in the room
+        rooms.join(user.room, user.name);
         // send the user the userlist in this chat room
         socket.emit('joined', user.name, rooms.getUserList(user.room));
         // notify all the users in this chat room that the new user joined
         socket.broadcast.to(user.room).emit('userjoin', user.name);
-        // update the userlist in the room
-        rooms.join(user.room, user.name);
 
         // save user's action
         user.actions.push({
@@ -81,6 +81,10 @@ ioapp.on('connection', function(socket) {
 
     // emit the message to all users in the room
     socket.on('chatmessage', function(msg) {
+        if (typeof user.room === 'undefined') {
+            socket.emit('Error', 'You have to join a room');
+            return;
+        }
         //io.emit('chat message', msg);
         if (msg) {
             ioapp.to(user.room).emit('chatmessage', {
@@ -95,7 +99,7 @@ ioapp.on('connection', function(socket) {
             saveUser();
         }
 
-        console.log('message-:', msg, 'socket.room', user.room);
+        console.log('message:', msg, 'socket.room', user.room);
     });
 });
 

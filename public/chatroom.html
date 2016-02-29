@@ -11,13 +11,13 @@
 <body ng-controller="chatCtl">
     <div class="container">
         <div class="header">
-            <header>
+            <header ng-cloak>
                 <p>Hello <span class="myname" style="color:{{getUserColor(myname)}};">{{myname}}</span>, Welcome to the cozeist chat room. Have fun!!!</p>
             </header>
         </div>
 
-        <div class="msg-window">
-            <ul class="messages">
+        <div class="msg-window" ng-cloak>
+            <ul class="messages" ng-cloak>
                 <li ng-repeat="msg in msgs">
                     <span class="username" style="color:{{getUserColor(msg.username)}};">{{msg.username}}</span>
                     <span class="message">{{msg.message}}</span>
@@ -25,7 +25,7 @@
             </ul>
         </div>
 
-        <div class="users-window">
+        <div class="users-window" ng-cloak>
             <ul class="userlist">
                 <li ng-repeat="user in users"><span style="color:{{getUserColor(user)}};">{{user}}<span ng-show="user===myname">&#x2605;</ng-show></span></li>
             </ul>
@@ -39,7 +39,6 @@
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/javascripts/chatroomclient.js"></script>
-    <script src="//localhost:35729/livereload.js"></script>
 </body>
 
 </html>
