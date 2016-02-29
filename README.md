@@ -1,7 +1,10 @@
 # cozychatroom
 A website where users can create chat room arbitrarily (Multiple rooms). Utilizing Node.js and AngularJS.
 
-DEMO: https://gentle-crag-97246.herokuapp.com/chatroom/join?room=1
+DEMO:   
+https://gentle-crag-97246.herokuapp.com/chatroom/join?room=1  
+https://gentle-crag-97246.herokuapp.com/chatroom/join?room=2  
+https://gentle-crag-97246.herokuapp.com/chatroom/join?room=3  
 
 ## How to use
 
