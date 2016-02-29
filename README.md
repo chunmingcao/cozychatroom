@@ -41,3 +41,8 @@ DEMO: https://gentle-crag-97246.herokuapp.com/chatroom/join?room=1
 ## Technologies
 
 Node.js, Socket.io, Express, AngularJS, MongoDB, Mongoose, Websocket, HTML5, Mocha, Grunt
+
+### ToDo
+
+- Add more test cases and end to end test
+- Add user name input page
