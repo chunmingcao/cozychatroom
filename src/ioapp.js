@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 /*
 You need build simple( ! ) Nodejs application.
 It must be website with many rooms and allow for many users inside the rooms.
@@ -95,7 +95,7 @@ ioapp.on('connection', function(socket) {
             saveUser();
         }
 
-        console.log('message:', msg, 'socket.room', user.room);
+        console.log('message-:', msg, 'socket.room', user.room);
     });
 });
 

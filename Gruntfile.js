@@ -1,18 +1,21 @@
 module.exports = function(grunt) {
-    
-  // configurable paths
-  var config = {
-    dist: 'dist/'
-  };
+
+    // configurable paths
+    var config = {
+        dist: 'dist/'
+    };
 
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         jshint: {
-            all: ['src/**/*.js', 'public/**/*.js']
+            options: {
+                node: true
+            },
+            all: ['Gruntfile.js', 'src/**/*.js', 'public/**/*.js']
         },
         jsbeautifier: {
-            files: ['src/**/*.js', 'public/**/*.js', "public/**/*.html", "public/**/*.css"]
+            files: ['Gruntfile.js', 'src/**/*.js', 'public/**/*.js', "public/**/*.html", "public/**/*.css"]
         },
         uglify: {
             options: {
@@ -50,38 +53,94 @@ module.exports = function(grunt) {
             }
         },
         copy: {
-          src: {
-              files: [{
-                expand: true,
-                cwd: 'src',
-                src: '**',
-                dest: config.dist,
-              }]
-          },
-          public: {
-              files: [{
-                expand: true,
-                src: 'public/**',
-                dest: config.dist,                  
-              }]
-          },
-          others: {
-              files: [{
-                expand: true,
-                src: 'bin/**',
-                dest: config.dist,                  
-              }]
-          }
+            src: {
+                files: [{
+                    expand: true,
+                    cwd: 'src',
+                    src: '**',
+                    dest: config.dist,
+                }]
+            },
+            test: {
+                files: [{
+                    expand: true,
+                    src: 'test/**',
+                    dest: config.dist,
+                }]
+            },
+            public: {
+                files: [{
+                    expand: true,
+                    src: 'public/**',
+                    dest: config.dist,
+                }]
+            },
+            others: {
+                files: [{
+                    expand: true,
+                    src: 'bin/**',
+                    dest: config.dist,
+                }]
+            }
         },
-        clean: ["dist/**"],
+        clean: {
+            dev: {
+                src: ['dist/**']
+            },
+            coverage: {
+                src: ['coverage/**']
+            }
+        },
         open: {
-          chatroom: {
-            url: 'http://localhost:' + (process.env.PORT || '3000') + '/chatroom'
-          }
+            chatroom: {
+                url: 'http://localhost:' + (process.env.PORT || '3000') + '/chatroom'
+            }
         },
+        mochaTest: {
+            test: {
+                options: {
+                    reporter: 'spec',
+                    /*captureFile: 'test/results.txt', */ //Optionally capture the reporter output to a file
+                    quiet: false, // Optionally suppress output to standard out (defaults to false)
+                    clearRequireCache: false, // Optionally clear the require cache before running tests (defaults to false)
+                },
+                src: ['test/*.js']
+            }
+        },
+
+        // start - code coverage settings
+        env: {
+            coverage: {
+                APP_DIR_FOR_CODE_COVERAGE: '../coverage/instrument/dist/bin/'
+            }
+        },
+
+        instrument: {
+            files: ['dist/*.js', 'dist/routes/*.js', 'dist/models/*.js', 'dist/bin/*'],
+            options: {
+                lazy: true,
+                basePath: 'coverage/instrument/'
+            }
+        },
+
+        storeCoverage: {
+            options: {
+                dir: 'coverage/reports'
+            }
+        },
+
+        makeReport: {
+            src: 'coverage/reports/**/*.json',
+            options: {
+                type: 'lcov',
+                dir: 'coverage/reports',
+                print: 'detail'
+            }
+        }
+        // end - code coverage settings
+
     });
 
-    // Load the plugin that provides the "uglify" task.
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -89,12 +148,17 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-express-server');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-open'); 
-    
-    // Default task(s).
-    grunt.registerTask('build', ['clean', 'jshint', 'jsbeautifier', 'copy', 'uglify']);
+    grunt.loadNpmTasks('grunt-open');
+    grunt.loadNpmTasks('grunt-mocha-test');
+    grunt.loadNpmTasks('grunt-istanbul');
+    grunt.loadNpmTasks('grunt-env');
+
+    grunt.registerTask('build', ['clean:dev', 'jshint', 'jsbeautifier', 'copy', 'uglify']);
     grunt.registerTask('dev', ['build', 'express', 'open', 'watch']);
     grunt.registerTask('server', ['express:dev', 'open', 'watch']);
+    // Default task(s).
     grunt.registerTask('default', ['dev']);
-    
+
+    grunt.registerTask('test', ['mochaTest']);
+    grunt.registerTask('coverage', ['clean:coverage', 'env:coverage', 'instrument', 'mochaTest', 'storeCoverage', 'makeReport']);
 };

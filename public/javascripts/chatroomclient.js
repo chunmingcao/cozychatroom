@@ -1,8 +1,9 @@
-'use strict'
 // Would write the value of the QueryString-variable called name to the console  
 var chatApp = angular.module('chatApp', []);
 
 chatApp.controller('chatCtl', ['$scope', function($scope) {
+    'use strict';
+
     var COLORS = [
         '#e21400', '#91580f', '#f8a700', '#f78b00',
         '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',

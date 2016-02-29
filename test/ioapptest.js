@@ -4,13 +4,25 @@ var io = require('socket.io-client')
 , assert = require('assert')
 , expect = require('expect.js');
 
+function requireHelper(path) {
+    console.log((process.env.APP_DIR_FOR_CODE_COVERAGE || '../dist/bin/') + path);
+  return require((process.env.APP_DIR_FOR_CODE_COVERAGE || '../dist/bin/') + path);
+};
+
 describe('Chatroom socket server test', function() {
     var socketA;
     var socketB;
     var socketC;
+    var server;
+    
+    function setupServer(){
+        requireHelper('www');
+    }
     
     function connectAndJoin(room){
-        var socket = io.connect('http://localhost:3000');
+        var socket = io.connect('http://localhost:3000', {
+          forceNew: true
+        });
         
         // join a room immediately after the connection
         socket.on('connect', function() {
@@ -31,6 +43,7 @@ describe('Chatroom socket server test', function() {
     }
     
     beforeEach(function(done) {
+        setupServer();
         // Setup
         socketA = connectAndJoin(11);
                 // when user joine the chat room successfully
