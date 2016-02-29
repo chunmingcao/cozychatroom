@@ -61,8 +61,8 @@ chatApp.controller('chatCtl', ['$scope', function($scope) {
             var index = $scope.users.indexOf(username);
             $scope.users.splice(index, 1);
             $scope.msgs.push({
-            username: username,
-            message: 'Bye bye!!! (Auto message)'
+                username: username,
+                message: 'Bye bye!!! (Auto message)'
             });
         });
     });
@@ -72,16 +72,19 @@ chatApp.controller('chatCtl', ['$scope', function($scope) {
         console.log('recievemsg', msg);
         $scope.$apply(function() {
             $scope.msgs.push(msg);
+            // scroll to the bottom
+            console.log('scroll', angular.element('.messages'));
+            angular.element('.messages')[0].scrollTop = angular.element('.messages')[0].scrollHeight;
         });
-
-        // scroll to the bottom
-        console.log('scroll', angular.element('.messages'));
-        angular.element('.messages')[0].scrollTop = angular.element('.messages')[0].scrollHeight;
     });
 
     // send a message
     $scope.sendmessage = function(msg) {
         console.log('sendmsg', msg);
+        if (!socket.connected) {
+            alert('You are disconnected. Please refresh the connection.');
+            return false;
+        }
         if (msg)
             socket.emit('chatmessage', msg);
         $scope.msg = '';
