@@ -1,5 +1,7 @@
 # cozychatroom
-A real time chat room implemented with Socket.io and Express
+A website where users can create chat room arbitrarily (Multiple rooms). Utilizing Node.js and AngularJS.
+
+DEMO: https://gentle-crag-97246.herokuapp.com/chatroom/join?room=1
 
 ## How to use
 
@@ -35,8 +37,6 @@ schema: /join?room={room_id:\d+}
 You can use same link to join into a room in another browser. Different browsers - different Users.  
 
 Using Mongodb as database and store there users activity.  
-
-DEMO: https://gentle-crag-97246.herokuapp.com/chatroom/join?room=1
 
 ## Technologies
 
