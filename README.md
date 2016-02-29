@@ -26,9 +26,6 @@ $ grunt dev
 $ grunt coverage
 ```
 
-And point your browser to `http://localhost:3000`. Optionally, specify
-a port by supplying the `PORT` env variable.
-
 ## Features
 
 A website with many rooms and allow for many users inside the rooms.  
@@ -43,4 +40,4 @@ DEMO: https://gentle-crag-97246.herokuapp.com/chatroom/join?room=1
 
 ## Technologies
 
-Node.js, Socket.io, Express, AngularJS, Websocket, HTML5, Mocha, Grunt
+Node.js, Socket.io, Express, AngularJS, MongoDB, Mongoose, Websocket, HTML5, Mocha, Grunt
