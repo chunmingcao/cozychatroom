@@ -49,3 +49,4 @@ Node.js, Socket.io, Express, AngularJS, MongoDB, Mongoose, Websocket, HTML5, Moc
 
 - Add more test cases and end to end test
 - Add user name input page
+- Add RabbitQueue between Socket server and Data persistence
